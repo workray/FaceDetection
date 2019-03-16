@@ -8,20 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		1EF347F4223C98F300AA81DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF347F3223C98F300AA81DA /* AppDelegate.swift */; };
-		1EF347F6223C98F300AA81DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF347F5223C98F300AA81DA /* ViewController.swift */; };
+		1EF347F6223C98F300AA81DA /* FaceDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF347F5223C98F300AA81DA /* FaceDetectionViewController.swift */; };
 		1EF347F9223C98F300AA81DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EF347F7223C98F300AA81DA /* Main.storyboard */; };
 		1EF347FB223C98F300AA81DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EF347FA223C98F300AA81DA /* Assets.xcassets */; };
 		1EF347FE223C98F300AA81DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EF347FC223C98F300AA81DA /* LaunchScreen.storyboard */; };
+		1EF34807223C9B2500AA81DA /* CoreGraphics+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF34806223C9B2500AA81DA /* CoreGraphics+Extension.swift */; };
+		1EF34809223C9B3600AA81DA /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF34808223C9B3600AA81DA /* UIView+Extension.swift */; };
+		1EF3480B223C9B5200AA81DA /* FaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF3480A223C9B5200AA81DA /* FaceView.swift */; };
+		1EF3480D223C9B6000AA81DA /* LaserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF3480C223C9B6000AA81DA /* LaserView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1EF347F0223C98F300AA81DA /* FaceDetection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceDetection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EF347F3223C98F300AA81DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1EF347F5223C98F300AA81DA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1EF347F5223C98F300AA81DA /* FaceDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionViewController.swift; sourceTree = "<group>"; };
 		1EF347F8223C98F300AA81DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1EF347FA223C98F300AA81DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1EF347FD223C98F300AA81DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1EF347FF223C98F300AA81DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1EF34806223C9B2500AA81DA /* CoreGraphics+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extension.swift"; sourceTree = "<group>"; };
+		1EF34808223C9B3600AA81DA /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		1EF3480A223C9B5200AA81DA /* FaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceView.swift; sourceTree = "<group>"; };
+		1EF3480C223C9B6000AA81DA /* LaserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaserView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +62,26 @@
 		1EF347F2223C98F300AA81DA /* FaceDetection */ = {
 			isa = PBXGroup;
 			children = (
+				1EF34805223C9B0E00AA81DA /* Extensions */,
 				1EF347F3223C98F300AA81DA /* AppDelegate.swift */,
-				1EF347F5223C98F300AA81DA /* ViewController.swift */,
+				1EF347F5223C98F300AA81DA /* FaceDetectionViewController.swift */,
+				1EF3480A223C9B5200AA81DA /* FaceView.swift */,
+				1EF3480C223C9B6000AA81DA /* LaserView.swift */,
 				1EF347F7223C98F300AA81DA /* Main.storyboard */,
 				1EF347FA223C98F300AA81DA /* Assets.xcassets */,
 				1EF347FC223C98F300AA81DA /* LaunchScreen.storyboard */,
 				1EF347FF223C98F300AA81DA /* Info.plist */,
 			);
 			path = FaceDetection;
+			sourceTree = "<group>";
+		};
+		1EF34805223C9B0E00AA81DA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1EF34806223C9B2500AA81DA /* CoreGraphics+Extension.swift */,
+				1EF34808223C9B3600AA81DA /* UIView+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,8 +155,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EF347F6223C98F300AA81DA /* ViewController.swift in Sources */,
+				1EF347F6223C98F300AA81DA /* FaceDetectionViewController.swift in Sources */,
 				1EF347F4223C98F300AA81DA /* AppDelegate.swift in Sources */,
+				1EF34809223C9B3600AA81DA /* UIView+Extension.swift in Sources */,
+				1EF34807223C9B2500AA81DA /* CoreGraphics+Extension.swift in Sources */,
+				1EF3480D223C9B6000AA81DA /* LaserView.swift in Sources */,
+				1EF3480B223C9B5200AA81DA /* FaceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
