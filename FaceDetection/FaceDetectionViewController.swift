@@ -30,6 +30,8 @@ class FaceDetectionViewController: UIViewController {
     var midY: CGFloat = 0.0
     var maxY: CGFloat = 0.0
     
+    var sequenceHandler = VNSequenceRequestHandler()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCaptureSession()
@@ -96,11 +98,61 @@ extension FaceDetectionViewController {
         previewLayer.frame = view.bounds
         view.layer.insertSublayer(previewLayer, at: 0)
     }
+    
+    func detectedFace(request: VNRequest, error: Error?) {
+        // Extract the first result from the array of face observation results.
+        guard
+            let results = request.results as? [VNFaceObservation],
+            let result = results.first
+            else {
+                // Clear the FaceView if something goes wrong or no face is detected.
+                faceView.clear()
+                return
+        }
+        
+        // Set the bounding box to draw in the FaceView after converting it from the coordinates in the VNFaceObservation.
+        let box = result.boundingBox
+        faceView.boundingBox = convert(rect: box)
+        
+        // Call setNeedsDisplay() to make sure the FaceView is redrawn.
+        DispatchQueue.main.async {
+            self.faceView.setNeedsDisplay()
+        }
+    }
+    
+    func convert(rect: CGRect) -> CGRect {
+        // Use a handy method from AVCaptureVideoPreviewLayer to convert a normalized origin to the preview layer’s coordinate system.
+        let origin = previewLayer.layerPointConverted(fromCaptureDevicePoint: rect.origin)
+        
+        // Then use the same handy method along with some nifty Core Graphics extensions to convert the normalized size to the preview layer’s coordinate system.
+        let size = previewLayer.layerPointConverted(fromCaptureDevicePoint: rect.size.cgPoint)
+        
+        // Create a CGRect using the new origin and size.
+        return CGRect(origin: origin, size: size.cgSize)
+    }
 }
 
 // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate methods
 
 extension FaceDetectionViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        // Get the image buffer from the passed in sample buffer.
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return
+        }
+        
+        // Create a face detection request to detect face bounding boxes and pass the results to a completion handler.
+        let detectFaceRequest = VNDetectFaceRectanglesRequest(completionHandler: detectedFace)
+        
+        // Use your previously defined sequence request handler to perform your face detection request on the image.
+        // The orientation parameter tells the request handler what the orientation of the input image is.
+        do {
+            try sequenceHandler.perform(
+                [detectFaceRequest],
+                on: imageBuffer,
+                orientation: .leftMirrored)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
