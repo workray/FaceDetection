@@ -110,14 +110,7 @@ extension FaceDetectionViewController {
                 return
         }
         
-        // Set the bounding box to draw in the FaceView after converting it from the coordinates in the VNFaceObservation.
-        let box = result.boundingBox
-        faceView.boundingBox = convert(rect: box)
-        
-        // Call setNeedsDisplay() to make sure the FaceView is redrawn.
-        DispatchQueue.main.async {
-            self.faceView.setNeedsDisplay()
-        }
+        updateFaceView(for: result)
     }
     
     func convert(rect: CGRect) -> CGRect {
@@ -129,6 +122,85 @@ extension FaceDetectionViewController {
         
         // Create a CGRect using the new origin and size.
         return CGRect(origin: origin, size: size.cgSize)
+    }
+    
+    // Define a method which converts a landmark point to something that can be drawn on the screen.
+    func landmark(point: CGPoint, to rect: CGRect) -> CGPoint {
+        // Calculate the absolute position of the normalized point by using a Core Graphics extension defined in CoreGraphicsExtensions.swift.
+        let absolute = point.absolutePoint(in: rect)
+        
+        // Convert the point to the preview layer’s coordinate system.
+        let converted = previewLayer.layerPointConverted(fromCaptureDevicePoint: absolute)
+        
+        // Return the converted point.
+        return converted
+    }
+
+    func landmark(points: [CGPoint]?, to rect: CGRect) -> [CGPoint]? {
+        return points?.compactMap { landmark(point: $0, to: rect) }
+    }
+    
+    func updateFaceView(for result: VNFaceObservation) {
+        defer {
+            DispatchQueue.main.async {
+                self.faceView.setNeedsDisplay()
+            }
+        }
+        
+        let box = result.boundingBox
+        faceView.boundingBox = convert(rect: box)
+        
+        guard let landmarks = result.landmarks else {
+            return
+        }
+        
+        if let leftEye = landmark(
+            points: landmarks.leftEye?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.leftEye = leftEye
+        }
+        
+        if let rightEye = landmark(
+            points: landmarks.rightEye?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.rightEye = rightEye
+        }
+        
+        if let leftEyebrow = landmark(
+            points: landmarks.leftEyebrow?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.leftEyebrow = leftEyebrow
+        }
+        
+        if let rightEyebrow = landmark(
+            points: landmarks.rightEyebrow?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.rightEyebrow = rightEyebrow
+        }
+        
+        if let nose = landmark(
+            points: landmarks.nose?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.nose = nose
+        }
+        
+        if let outerLips = landmark(
+            points: landmarks.outerLips?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.outerLips = outerLips
+        }
+        
+        if let innerLips = landmark(
+            points: landmarks.innerLips?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.innerLips = innerLips
+        }
+        
+        if let faceContour = landmark(
+            points: landmarks.faceContour?.normalizedPoints,
+            to: result.boundingBox) {
+            faceView.faceContour = faceContour
+        }
     }
 }
 
@@ -142,7 +214,7 @@ extension FaceDetectionViewController: AVCaptureVideoDataOutputSampleBufferDeleg
         }
         
         // Create a face detection request to detect face bounding boxes and pass the results to a completion handler.
-        let detectFaceRequest = VNDetectFaceRectanglesRequest(completionHandler: detectedFace)
+        let detectFaceRequest = VNDetectFaceLandmarksRequest(completionHandler: detectedFace)
         
         // Use your previously defined sequence request handler to perform your face detection request on the image.
         // The orientation parameter tells the request handler what the orientation of the input image is.

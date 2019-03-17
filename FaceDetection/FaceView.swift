@@ -49,5 +49,52 @@ class FaceView: UIView {
         context.addRect(boundingBox)
         UIColor.red.setStroke()
         context.strokePath()
+        
+        UIColor.white.setStroke()
+        
+        if !leftEye.isEmpty {
+            context.addLines(between: leftEye)
+            context.closePath()
+            context.strokePath()
+        }
+        
+        if !rightEye.isEmpty {
+            context.addLines(between: rightEye)
+            context.closePath()
+            context.strokePath()
+        }
+        
+        if !leftEyebrow.isEmpty {
+            context.addLines(between: leftEyebrow)
+            context.strokePath()
+        }
+        
+        if !rightEyebrow.isEmpty {
+            context.addLines(between: rightEyebrow)
+            context.strokePath()
+        }
+        
+        if !nose.isEmpty {
+            context.addLines(between: nose)
+            context.strokePath()
+        }
+        
+        if !outerLips.isEmpty {
+            context.addLines(between: outerLips)
+            context.closePath()
+            context.strokePath()
+        }
+        
+        if !innerLips.isEmpty {
+            context.addLines(between: innerLips)
+            context.closePath()
+            context.strokePath()
+        }
+        
+        if !faceContour.isEmpty {
+            context.addLines(between: faceContour)
+            context.strokePath()
+        }
+
     }
 }
