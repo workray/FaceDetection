@@ -2,8 +2,8 @@
 
 Face Detection Using the Vision Framework for iOS
 
-![alt text](Screenshots/fullface.png?raw=true "Full Face")
-![alt text](Screenshots/laser.png?raw=true "Lasers")
+![alt text](Screenshots/full-face.png?raw=true "Full Face")
+![alt text](Screenshots/lasers.png?raw=true "Lasers")
 
 ## How to use the Vision framework to:
 
